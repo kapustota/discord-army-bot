@@ -1,5 +1,5 @@
 import discord
-from datetime import datetime
+from datetime import datetime, date
 from PIL import Image, ImageDraw, ImageFont
 import io
 import os
@@ -31,9 +31,12 @@ async def on_ready():
         print("Guild not found")
         await client.close()
         return
-
-    today = datetime.now().strftime("%d")
-    img_bytes = generate_image_with_number(today)
+    
+    target_date = date(2025, 4, 17)
+    today_date = date.today()
+    days_left = (target_date - today_date).days
+    
+    img_bytes = generate_image_with_number(str(days_left))
 
     try:
         await guild.edit(icon=img_bytes.read())
