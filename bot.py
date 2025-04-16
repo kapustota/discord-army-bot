@@ -15,7 +15,9 @@ def generate_image_with_number(number: str) -> io.BytesIO:
     img = Image.new('RGB', (256, 256), color=(30, 30, 30))
     draw = ImageDraw.Draw(img)
     font = ImageFont.load_default()
-    text_width, text_height = draw.textsize(number, font=font)
+    bbox = draw.textbbox((0, 0), number, font=font)
+    text_width = bbox[2] - bbox[0]
+    text_height = bbox[3] - bbox[1]
     draw.text(((256 - text_width) / 2, (256 - text_height) / 2), number, font=font, fill=(255, 255, 255))
 
     buffer = io.BytesIO()
