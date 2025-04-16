@@ -13,11 +13,11 @@ client = discord.Client(intents=intents)
 
 def generate_image_with_number(number: str) -> io.BytesIO:
     size = 512
-    img = Image.new('RGB', (size, size), color=(0, 76, 153))
+    img = Image.new('RGB', (size, size), color=(30, 30, 30))
     draw = ImageDraw.Draw(img)
 
-    # Загрузка кастомного TTF-шрифта
-    font_path = "fonts/Roboto-Bold.ttf"  # путь к шрифту в репозитории
+    # Подгружаем нормальный шрифт
+    font_path = "fonts/Roboto-Bold.ttf"
     try:
         font = ImageFont.truetype(font_path, 200)
     except:
@@ -26,9 +26,11 @@ def generate_image_with_number(number: str) -> io.BytesIO:
     bbox = draw.textbbox((0, 0), number, font=font)
     text_width = bbox[2] - bbox[0]
     text_height = bbox[3] - bbox[1]
+    text_x = (size - text_width) / 2
+    text_y = (size - text_height) / 2 - bbox[1]  # Коррекция вертикального смещения
 
     draw.text(
-        ((size - text_width) / 2, (size - text_height) / 2),
+        (text_x, text_y),
         number,
         font=font,
         fill=(255, 255, 255)
@@ -48,7 +50,7 @@ async def on_ready():
         await client.close()
         return
     
-    target_date = date(2025, 4, 17)
+    target_date = date(2026, 4, 17)
     today_date = date.today()
     days_left = (target_date - today_date).days
     
