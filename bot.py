@@ -12,13 +12,26 @@ intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
 def generate_image_with_number(number: str) -> io.BytesIO:
-    img = Image.new('RGB', (256, 256), color=(30, 30, 30))
+    size = 512
+    img = Image.new('RGB', (size, size), color=(30, 30, 30))
     draw = ImageDraw.Draw(img)
-    font = ImageFont.load_default()
+
+    # Лучше попытаться загрузить нормальный шрифт
+    try:
+        font = ImageFont.truetype("arial.ttf", 180)
+    except:
+        font = ImageFont.load_default()
+
     bbox = draw.textbbox((0, 0), number, font=font)
     text_width = bbox[2] - bbox[0]
     text_height = bbox[3] - bbox[1]
-    draw.text(((256 - text_width) / 2, (256 - text_height) / 2), number, font=font, fill=(255, 255, 255))
+
+    draw.text(
+        ((size - text_width) / 2, (size - text_height) / 2),
+        number,
+        font=font,
+        fill=(255, 255, 255)
+    )
 
     buffer = io.BytesIO()
     img.save(buffer, format='PNG')
