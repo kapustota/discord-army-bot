@@ -13,12 +13,13 @@ client = discord.Client(intents=intents)
 
 def generate_image_with_number(number: str) -> io.BytesIO:
     size = 512
-    img = Image.new('RGB', (size, size), color=(30, 30, 30))
+    img = Image.new('RGB', (size, size), color=(0, 76, 153))
     draw = ImageDraw.Draw(img)
 
-    # Лучше попытаться загрузить нормальный шрифт
+    # Загрузка кастомного TTF-шрифта
+    font_path = "fonts/Roboto-Bold.ttf"  # путь к шрифту в репозитории
     try:
-        font = ImageFont.truetype("arial.ttf", 180)
+        font = ImageFont.truetype(font_path, 200)
     except:
         font = ImageFont.load_default()
 
